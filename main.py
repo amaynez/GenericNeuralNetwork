@@ -1,12 +1,11 @@
 import numpy as np
 import Neural_Network as nn
 
-NN = nn.NeuralNetwork(2, 2, 1)
+NN = nn.NeuralNetwork(728, [16, 16], 8)
 
-inputs = [2, 3]
+inputs = np.arange(728)
 
 print(NN.forward_propagation(inputs), '\n')
-for weights in NN.weights:
-    print(weights, '\n')
-print(NN.output_weights, '\n')
-print(NN.bias, '\n')
+# for weights in NN.weights:
+#     print(weights, '\n')
+# print(NN.bias, '\n')
