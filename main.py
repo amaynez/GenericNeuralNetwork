@@ -5,5 +5,8 @@ NN = nn.NeuralNetwork(2, 2, 1)
 
 inputs = [2, 3]
 
-result = NN.forward_propagation(inputs)
-
+print(NN.forward_propagation(inputs), '\n')
+for weights in NN.weights:
+    print(weights, '\n')
+print(NN.output_weights, '\n')
+print(NN.bias, '\n')
