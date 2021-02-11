@@ -1,17 +1,19 @@
 import numpy as np
 
-
 def sigmoid(x):
-    return 1/(1 + np.exp(-x))
+    return 1 / (1 + np.exp(-x))
 
+def d_sigmoid(x):
+    return x * (1 - x)
 
 class NeuralNetwork:
-    def __init__(self, inputs, hidden, outputs):
+    def __init__(self, inputs, hidden, outputs, learning_rate):
         self.inputs = inputs
         if isinstance(hidden, int):
             hidden = [hidden]
         self.hidden = np.array(hidden)
         self.outputs = outputs
+        self.learning_rate = learning_rate
 
         # create weights for first hidden layer (defined based on number of inputs)
         self.weights = [np.random.uniform(-1, 1, size=(self.hidden[0], self.inputs))]
@@ -22,7 +24,7 @@ class NeuralNetwork:
                 self.weights.append(np.random.uniform(-1, 1, size=(hidden_col, self.hidden[idx])))
 
         # create weights for output layer (defined based on number of outputs)
-        self.weights.append([np.random.uniform(-1, 1, size=(self.outputs, self.hidden[-1],))])
+        self.weights.append(np.random.uniform(-1, 1, size=(self.outputs, self.hidden[-1],)))
 
         # create bias matrices (one per hidden layer and one for the output)
         self.bias = []
@@ -40,14 +42,13 @@ class NeuralNetwork:
 
         # calculate results for the first hidden layer (depends on the inputs)
         hidden_results.append(sigmoid(np.matmul(self.weights[0], input_values) + self.bias[0]))
-
         # calculate results for subsequent hidden layers if any (depending on the previous layer)
         if self.hidden.ndim > 0:
             for idx, hidden_cells in enumerate(self.hidden[1:]):
                 hidden_results.append(sigmoid(np.matmul(self.weights[idx + 1],
                                                         hidden_results[idx]) +
                                               self.bias[idx + 1]))
-        # calculate final result and return
+        # calculate final result and return, if explicit is set then return all the intermediate results as well
         output = []
         if 'explicit' in kwargs.keys():
             if kwargs.get('explicit') == 'yes':
@@ -56,31 +57,41 @@ class NeuralNetwork:
         return output
 
     def train(self, inputs, targets):
-        # get the results including the hidden layers'
+        # get the results including the hidden layers' (intermediate results)
         results = self.forward_propagation(inputs, explicit='yes')
-        # prepare the targets for matrix operations
-        targets = np.array(targets)[np.newaxis]
-        targets = targets.T
-        # calculate the error of the outputs vs the targets, index 0
-        error = [targets-results[-1]]
-        print('output error:', error, '\n')
-
+        # prepare the targets and inputs for matrix operations
+        targets = np.array(targets)[np.newaxis].T
+        input_values = np.array(inputs)[np.newaxis].T
+        # calculate the error (targets vs the outputs), index 0
+        error = [targets - results[-1]]
         # calculate the error of the hidden layers
-        for idx, weight_matrix in enumerate(self.weights):
-            print('weight_matrix:', idx, '\n', weight_matrix)
-        for idx, results_matrix in enumerate(results):
-            print('results matrix:', idx, '\n', results_matrix)
+        for idx in range(len(results) - 2, -1, -1):
+            error.insert(0, np.matmul(self.weights[idx + 1].T, error[0]))
 
-        for idx in range(len(results)-2, -1, -1):
-            print('\n', idx)
-            weights_matrix = np.array(self.weights[idx+1])
-            print('weights matrix', idx+1, ': ', weights_matrix.shape)
-            if weights_matrix.ndim == 3:
-                weights_matrix = weights_matrix.reshape(weights_matrix.shape[1], weights_matrix.shape[2])
-            weights_matrix = weights_matrix.T
-            print('weights reshaped and transposed', weights_matrix.shape, '\n', weights_matrix)
-            print('results\n', results[idx])
-            print(results[idx].shape)
-            error.append(np.matmul(weights_matrix, results[idx]))
-            print('calculated error:\n', error[-1])
-        print('error:', error)
+        # begin modifying weights
+        print('error: \n', error[0])
+        print('results: \n', results[0])
+        print('results d_sigmoid\n', d_sigmoid(results[0]))
+        print('error * d_sig results:\n', error[0] * d_sigmoid(results[0]))
+        print('input values:\n', input_values)
+        print('weights:\n', self.weights[0])
+        self.weights[0] += np.matmul((error[0] * d_sigmoid(results[0]) * self.learning_rate), input_values.T)
+        self.bias[0] += (error[0] * d_sigmoid(results[0])) * self.learning_rate
+        for idx, weight_cols in enumerate(self.weights[1:]):
+            print('error \n', error[idx + 1].shape)
+            print(error[idx + 1])
+            print('results \n', results[idx + 1].shape)
+            print(results[idx + 1])
+            print('weights \n', self.weights[idx + 1].shape)
+            print(self.weights[idx + 1])
+            print('error * d_sigmoid results \n', np.array(error[idx + 1] * d_sigmoid(results[idx + 1])).shape)
+            print(np.array(error[idx + 1] * d_sigmoid(results[idx + 1])))
+            print('previous results:\n', results[idx].T)
+            print('matmul vs results:\n', np.matmul(np.array(error[idx + 1] * d_sigmoid(results[idx + 1])),
+                                                    results[idx].T))
+            print('learning rate: ', self.learning_rate)
+            weight_cols += np.matmul(np.array((error[idx + 1] * d_sigmoid(results[idx + 1]) * self.learning_rate)),
+                                     results[idx].T)
+            self.bias[idx+1] += (error[idx+1] * d_sigmoid(results[idx+1])) * self.learning_rate
+            print('new weights: \n', self.weights[idx + 1].shape)
+            print(weight_cols)
