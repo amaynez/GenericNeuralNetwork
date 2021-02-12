@@ -63,35 +63,14 @@ class NeuralNetwork:
         targets = np.array(targets)[np.newaxis].T
         input_values = np.array(inputs)[np.newaxis].T
         # calculate the error (targets vs the outputs), index 0
-        error = [targets - results[-1]]
-        # calculate the error of the hidden layers
+        error = [results[-1] - targets]
+        # calculate the error of the hidden layers from last to first
         for idx in range(len(results) - 2, -1, -1):
             error.insert(0, np.matmul(self.weights[idx + 1].T, error[0]))
-
-        # begin modifying weights
-        print('error: \n', error[0])
-        print('results: \n', results[0])
-        print('results d_sigmoid\n', d_sigmoid(results[0]))
-        print('error * d_sig results:\n', error[0] * d_sigmoid(results[0]))
-        print('input values:\n', input_values)
-        print('weights:\n', self.weights[0])
-        self.weights[0] += np.matmul((error[0] * d_sigmoid(results[0]) * self.learning_rate), input_values.T)
-        self.bias[0] += (error[0] * d_sigmoid(results[0])) * self.learning_rate
+        # modify weights
+        self.weights[0] -= np.matmul((error[0] * d_sigmoid(results[0]) * self.learning_rate), input_values.T)
+        self.bias[0] -= (error[0] * d_sigmoid(results[0])) * self.learning_rate
         for idx, weight_cols in enumerate(self.weights[1:]):
-            print('error \n', error[idx + 1].shape)
-            print(error[idx + 1])
-            print('results \n', results[idx + 1].shape)
-            print(results[idx + 1])
-            print('weights \n', self.weights[idx + 1].shape)
-            print(self.weights[idx + 1])
-            print('error * d_sigmoid results \n', np.array(error[idx + 1] * d_sigmoid(results[idx + 1])).shape)
-            print(np.array(error[idx + 1] * d_sigmoid(results[idx + 1])))
-            print('previous results:\n', results[idx].T)
-            print('matmul vs results:\n', np.matmul(np.array(error[idx + 1] * d_sigmoid(results[idx + 1])),
-                                                    results[idx].T))
-            print('learning rate: ', self.learning_rate)
-            weight_cols += np.matmul(np.array((error[idx + 1] * d_sigmoid(results[idx + 1]) * self.learning_rate)),
+            weight_cols -= np.matmul(np.array((error[idx + 1] * d_sigmoid(results[idx + 1]) * self.learning_rate)),
                                      results[idx].T)
-            self.bias[idx+1] += (error[idx+1] * d_sigmoid(results[idx+1])) * self.learning_rate
-            print('new weights: \n', self.weights[idx + 1].shape)
-            print(weight_cols)
+            self.bias[idx+1] -= (error[idx+1] * d_sigmoid(results[idx+1])) * self.learning_rate
