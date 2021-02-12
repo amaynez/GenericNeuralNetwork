@@ -44,7 +44,9 @@ learning_rounds = 64
 fig = plt.figure()
 fig.canvas.set_window_title('Learning XOR Algorithm')
 fig.set_size_inches(9, 6)
-
+x = np.linspace(0, 1, num_surface_points)
+y = np.linspace(0, 1, num_surface_points)
+x, y = np.meshgrid(x, y)
 
 def animate(t):
     # training
@@ -57,21 +59,18 @@ def animate(t):
                  str(learning_rounds * t),
                  fontsize=12
                  )
-    axs = Axes3D(fig)
-    x = np.linspace(0, 1, num_surface_points)
-    y = np.linspace(0, 1, num_surface_points)
-    x, y = np.meshgrid(x, y)
-    z = np.array(NN.forward_propagation([x, y])).reshape(num_surface_points, num_surface_points)
-    surface = axs.plot_surface(x, y, z, rstride=1, cstride=1, cmap='viridis', vmin=0, vmax=1, antialiased=True)
-    axs.set_xticks([0, 0.25, 0.5, 0.75, 1])
-    axs.set_yticks([0, 0.25, 0.5, 0.75, 1])
-    axs.set_zticks([0, 0.25, 0.5, 0.75, 1])
-    axs.xaxis.set_ticklabels([0, 0.25, 0.5, 0.75, 1], fontsize=8, color='.5')
-    axs.yaxis.set_ticklabels([0, 0.25, 0.5, 0.75, 1], fontsize=8, color='.5')
-    axs.zaxis.set_ticklabels([0, 0.25, 0.5, 0.75, 1], fontsize=8, color='.5')
-    axs.set_xlabel('Input 1', fontsize=10, color='.25')
-    axs.set_ylabel('Input 2', fontsize=10, color='.25')
-    axs.set_zlabel('Predicted result', fontsize=10, color='.25')
+    axs_ = Axes3D(fig)
+    z_ = np.array(NN.forward_propagation([x, y])).reshape(num_surface_points, num_surface_points)
+    surface = axs_.plot_surface(x, y, z_, rstride=1, cstride=1, cmap='viridis', vmin=0, vmax=1, antialiased=True)
+    axs_.set_xticks([0, 0.25, 0.5, 0.75, 1])
+    axs_.set_yticks([0, 0.25, 0.5, 0.75, 1])
+    axs_.set_zticks([0, 0.25, 0.5, 0.75, 1])
+    axs_.xaxis.set_ticklabels([0, 0.25, 0.5, 0.75, 1], fontsize=8, color='.5')
+    axs_.yaxis.set_ticklabels([0, 0.25, 0.5, 0.75, 1], fontsize=8, color='.5')
+    axs_.zaxis.set_ticklabels([0, 0.25, 0.5, 0.75, 1], fontsize=8, color='.5')
+    axs_.set_xlabel('Input 1', fontsize=10, color='.25')
+    axs_.set_ylabel('Input 2', fontsize=10, color='.25')
+    axs_.set_zlabel('Predicted result', fontsize=10, color='.25')
     fig.colorbar(surface, shrink=0.7, aspect=20, pad=0.12)
 
 
@@ -90,9 +89,7 @@ print('0 XOR 1: ', NN.forward_propagation([0, 1]))
 print('1 XOR 0: ', NN.forward_propagation([1, 0]))
 print('1 XOR 1: ', NN.forward_propagation([1, 1]))
 
-x = np.linspace(0, 1, num_surface_points)
-y = np.linspace(0, 1, num_surface_points)
-x, y = np.meshgrid(x, y)
+
 z = np.array(NN.forward_propagation([x, y])).reshape(num_surface_points**2)
 fig = plt.figure()
 fig.canvas.set_window_title('Learning XOR Algorithm')
