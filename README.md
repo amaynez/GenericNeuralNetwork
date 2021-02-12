@@ -10,4 +10,6 @@ Once created the Neural Network has two functions:
 - <b>Forward Propagation</b>: to generate a prediction or guess based on the inputs
 - <b>Train</b>: to modify the inner weights and biases based on given inputs and target outputs
 
-For testing purposes the XOR algorithm is implemented in the main.py script
+For testing purposes the XOR algorithm is implemented in the main.py script.
+
+<img src='Learning_XOR_Algorithm.png'>
