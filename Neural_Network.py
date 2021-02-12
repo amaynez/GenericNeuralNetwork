@@ -59,14 +59,18 @@ class NeuralNetwork:
     def train(self, inputs, targets):
         # get the results including the hidden layers' (intermediate results)
         results = self.forward_propagation(inputs, explicit='yes')
+
         # prepare the targets and inputs for matrix operations
         targets = np.array(targets)[np.newaxis].T
         input_values = np.array(inputs)[np.newaxis].T
+
         # calculate the error (targets vs the outputs), index 0
         error = [results[-1] - targets]
+
         # calculate the error of the hidden layers from last to first
         for idx in range(len(results) - 2, -1, -1):
             error.insert(0, np.matmul(self.weights[idx + 1].T, error[0]))
+
         # modify weights
         self.weights[0] -= np.matmul((error[0] * d_sigmoid(results[0]) * self.learning_rate), input_values.T)
         self.bias[0] -= (error[0] * d_sigmoid(results[0])) * self.learning_rate
