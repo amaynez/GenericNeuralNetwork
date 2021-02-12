@@ -13,7 +13,6 @@
 # For testing purposes the XOR algorithm is implemented in the main.py script
 
 import numpy as np
-from matplotlib import cm
 import Neural_Network as nn
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
@@ -43,7 +42,6 @@ print('1 XOR 1: ', np.round(NN.forward_propagation([1, 1]), 0).reshape(1))
 learning_rounds = 8
 
 fig = plt.figure()
-axs = Axes3D(fig)
 fig.canvas.set_window_title('Learning XOR Algorithm')
 fig.set_size_inches(9, 6)
 # axs.spines['top'].set_color('none')
@@ -58,21 +56,22 @@ def animate(t):
         j = np.random.randint(4)
         NN.train(training_data[j:j + 1, :2].reshape(2), training_data[j:j + 1, 2:].reshape(1))
 
+    fig.clear()
     fig.suptitle('Learned ' +
                  str(learning_rounds * t),
                  fontsize=12
                  )
-
-    axs.clear()
-    num_surface_points = 64
+    axs = Axes3D(fig)
+    num_surface_points = 32
     x = np.linspace(0, 1, num_surface_points)
     y = np.linspace(0, 1, num_surface_points)
     x, y = np.meshgrid(x, y)
     z = np.array(NN.forward_propagation([x, y])).reshape(num_surface_points, num_surface_points)
-    axs.plot_surface(x, y, z,  rstride=1, cstride=1, cmap='viridis', antialiased=True)
-    axs.set_zlim(0, 1.01)
-    axs.zaxis.set_major_locator(LinearLocator(10))
-    axs.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+    surf = axs.plot_surface(x, y, z, rstride=1, cstride=1, cmap='viridis', vmin=0, vmax=1, antialiased=True)
+    axs.set_xticks([0, 0.25, 0.5, 0.75, 1])
+    axs.set_yticks([0, 0.25, 0.5, 0.75, 1])
+    axs.set_zticks([0, 0.25, 0.5, 0.75, 1])
+    fig.colorbar(surf, shrink=0.7, aspect=20, pad=0.12)
 
 ani = animation.FuncAnimation(fig, animate, interval=1)
 plt.show()
