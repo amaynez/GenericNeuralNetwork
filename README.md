@@ -1,6 +1,6 @@
 # Fully connected Generic Neural Network with sigmoid activation for supervised learning
 
-This program creates a neural network programatically with the following parameters:
+This program creates a neural network programmatically with the following parameters:
 - number of inputs
 - number of neurons in hidden layer 1, ..., number of neurons in hidden layer n
 - number of outputs
