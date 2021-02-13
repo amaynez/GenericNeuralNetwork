@@ -55,7 +55,7 @@ class NeuralNetwork:
         # calculate final result and return, if explicit is set then return all the intermediate results as well
         output = []
         if 'explicit' in kwargs.keys():
-            if kwargs.get('explicit') == 'yes' or kwargs.get('explicit') == 1:
+            if kwargs.get('explicit') in ['yes', 'y', 1]:
                 output = hidden_results
         output.append(sigmoid(np.matmul(self.weights[-1], hidden_results[-1]) + self.bias[-1]))
         return output
@@ -81,6 +81,6 @@ class NeuralNetwork:
 
         # modify weights and biases (all subsequent hidden layers and output)
         for idx, weight_cols in enumerate(self.weights[1:]):
-            weight_cols -= np.matmul(np.array((error[idx + 1] * d_sigmoid(results[idx + 1]) * self.learning_rate)),
+            weight_cols -= np.matmul((error[idx + 1] * d_sigmoid(results[idx + 1]) * self.learning_rate),
                                      results[idx].T)
             self.bias[idx + 1] -= (error[idx + 1] * d_sigmoid(results[idx + 1])) * self.learning_rate
