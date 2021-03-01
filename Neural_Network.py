@@ -60,7 +60,7 @@ class NeuralNetwork:
         output.append(sigmoid(np.matmul(self.weights[-1], hidden_results[-1]) + self.bias[-1]))
         return output
 
-    def train(self, inputs, targets):
+    def train(self, inputs, targets, batch_size):
         # get the results including the hidden layers' (intermediate results)
         results = self.forward_propagation(inputs, explicit='yes')
 
@@ -68,19 +68,18 @@ class NeuralNetwork:
         targets = np.array(targets)[np.newaxis].T
         input_values = np.array(inputs)[np.newaxis].T
 
-        # calculate the error (outputs vs targets), index 0
-        error = [results[-1] - targets]
+        # calculate the derivative error_matrix (targets vs outputs), index 0
+        d_error_matrix = [((targets - results[-1]) * d_sigmoid(results[-1]))/batch_size]
 
-        # calculate the error of the hidden layers from last to first but insert in the correct order
-        for idx in range(len(results) - 2, -1, -1):
-            error.insert(0, np.matmul(self.weights[idx + 1].T, error[0]))
+        # calculate the derivative error_matrix of the hidden layers from last to first but insert in the correct order
+        for idx in range(len(results) - 1, 0, -1):
+            d_error_matrix.insert(0, np.matmul(self.weights[idx].T, d_error_matrix[0] * d_sigmoid(results[idx])))
 
-        # modify weights and biases (input -> first hidden layer)
-        self.weights[0] -= np.matmul((error[0] * d_sigmoid(results[0]) * self.learning_rate), input_values.T)
-        self.bias[0] -= (error[0] * d_sigmoid(results[0])) * self.learning_rate
+        # calculate the gradient for all hidden layers
+        for idx, weight_col in enumerate(self.weights[1:]):
+            weight_col -= self.learning_rate * np.matmul(d_error_matrix[idx + 1], results[idx].T)
+            self.bias[idx + 1] -= self.learning_rate * d_error_matrix[idx + 1]
 
-        # modify weights and biases (all subsequent hidden layers and output)
-        for idx, weight_cols in enumerate(self.weights[1:]):
-            weight_cols -= np.matmul((error[idx + 1] * d_sigmoid(results[idx + 1]) * self.learning_rate),
-                                     results[idx].T)
-            self.bias[idx + 1] -= (error[idx + 1] * d_sigmoid(results[idx + 1])) * self.learning_rate
+        # calculate the gradient for the first layer weights (input -> first hidden layer)
+        self.weights[0] -= self.learning_rate * np.matmul(d_error_matrix[0], input_values.T)
+        self.bias[0] -= self.learning_rate * d_error_matrix[0]
