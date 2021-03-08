@@ -1,5 +1,7 @@
 # Fully connected Generic Neural Network with sigmoid activation for supervised learning
 
+NOTE: the code for this library has been greately enhanced for a subsequent project [link here](https://github.com/amaynez/TicTacToe/blob/master/entities/Neural_Network.py)
+
 This program creates a neural network programmatically with the following parameters:
 - number of inputs
 - number of neurons in hidden layer 1, ..., number of neurons in hidden layer n
