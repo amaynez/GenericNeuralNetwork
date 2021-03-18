@@ -3,6 +3,8 @@
 )](https://www.python.org)
 [![Module](https://img.shields.io/badge/module-numpy-brightgreen.svg?style=flat
 )](https://numpy.org/)
+[![Module](https://img.shields.io/badge/module-matplotlib-brightgreen.svg?style=flat
+)](https://matplotlib.org/)
 [![Release](https://img.shields.io/badge/release-v1.0-orange.svg?style=flat
 )](https://github.com/amaynez/GenericNeuralNetwork)
 
