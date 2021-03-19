@@ -1,4 +1,6 @@
 import numpy as np
+import json
+import json_numpy
 
 
 def sigmoid(x):
@@ -84,3 +86,28 @@ class NeuralNetwork:
             weight_cols -= np.matmul((error[idx + 1] * d_sigmoid(results[idx + 1]) * self.learning_rate),
                                      results[idx].T)
             self.bias[idx + 1] -= (error[idx + 1] * d_sigmoid(results[idx + 1])) * self.learning_rate
+
+    def save_to_file(self, file_name='NeuralNet.json'):
+        json_file = {
+            'weights': self.weights,
+            'biases': self.bias}
+        try:
+            with open(file_name, 'w') as file:
+                json.dump(
+                    json_file,
+                    file,
+                    ensure_ascii=False,
+                    cls=json_numpy.EncodeFromNumpy)
+                print('weights saved to file')
+        except:
+            print('cannot save to ', file)
+
+    def load_from_file(self, file_name='NeuralNet.json'):
+        try:
+            with open(file_name) as file:
+                json_file = json.load(file, cls=json_numpy.DecodeToNumpy)
+                print('weights loaded from file')
+                self.weights = json_file['weights']
+                self.bias = json_file['biases']
+        except:
+            print('cannot open ', file_name)
