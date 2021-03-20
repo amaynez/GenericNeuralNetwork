@@ -27,6 +27,9 @@ Once created the Neural Network has two functions:
 
 For testing purposes the XOR algorithm is implemented in the main.py script.
 
+<img src='Surface_XOR.png'>
+<img src='Final_XOR_Plot.png'>
+=======
 <img src='Learning_XOR_Algorithm.png'>
 <img src='Final_XOR_Plot.png'>
 
@@ -35,3 +38,4 @@ TO DO:
 - multiple optimizers (Adam, RMSProp, SGD Momentum, etc.)
 - batch and epoch training schedules
 - save and load trained model to file
+
