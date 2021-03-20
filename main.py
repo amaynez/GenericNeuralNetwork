@@ -21,12 +21,13 @@ import random as rnd
 inputs = 3
 hidden_layers = [2]
 outputs = 1
+activation = ['sigmoid', 'sigmoid']
 learning_rate = 0.03
 learning_pool_size = 100000
 batch_size = 1024
 num_surface_points = 32  # for plotting
 
-NN = nn.NeuralNetwork(inputs, hidden_layers, outputs, learning_rate)
+NN = nn.NeuralNetwork(inputs, hidden_layers, outputs, activation, learning_rate)
 
 training_data = []
 for n in range(learning_pool_size):

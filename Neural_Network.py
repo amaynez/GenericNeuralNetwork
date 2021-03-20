@@ -3,22 +3,37 @@ import json
 import json_numpy
 
 
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+def act_function(x, function):
+    if function in ['sigmoid', 'Sigmoid', 'SIGMOID']:
+        return 1 / (1 + np.exp(-x))
+    elif function in ['ReLU', 'relu', 'RELU']:
+        return x * (x > 0)
+    elif function in ['linear', 'Linear', 'line']:
+        return x
+    elif function in ['tanh', 'TanH', 'tanH', 'Tanh']:
+        return (2 / (1 + np.exp(-2 * x))) - 1
 
 
-def d_sigmoid(x):
-    return x * (1 - x)
+def d_act_function(x, function):
+    if function in ['sigmoid', 'Sigmoid', 'SIGMOID']:
+        return x * (1 - x)
+    elif function in ['ReLU', 'relu', 'RELU']:
+        return 1 * (x > 0)
+    elif function in ['linear', 'Linear', 'line']:
+        return np.ones_like(x)
+    elif function in ['tanh', 'TanH', 'tanH', 'Tanh']:
+        return 1 - x ** 2
 
 
 class NeuralNetwork:
-    def __init__(self, inputs, hidden, outputs, learning_rate):
+    def __init__(self, inputs, hidden, outputs, activation, learning_rate):
         self.inputs = inputs
         if isinstance(hidden, int):
             hidden = [hidden]
         self.hidden = np.array(hidden)
         self.outputs = outputs
         self.learning_rate = learning_rate
+        self.activation = activation
 
         # create weights for first hidden layer (defined based on number of inputs)
         self.weights = [np.random.uniform(-1, 1, size=(self.hidden[0], self.inputs))]
@@ -45,21 +60,23 @@ class NeuralNetwork:
         input_values = np.array(input_values)[np.newaxis].T
 
         # calculate results for the first hidden layer (depending on the inputs)
-        hidden_results.append(sigmoid(np.matmul(self.weights[0], input_values) + self.bias[0]))
+        hidden_results.append(act_function(np.matmul(self.weights[0], input_values) + self.bias[0], self.activation[0]))
 
         # calculate results for subsequent hidden layers if any (depending on the previous layer)
         if self.hidden.ndim > 0:
             for idx, hidden_cells in enumerate(self.hidden[1:]):
-                hidden_results.append(sigmoid(np.matmul(self.weights[idx + 1],
-                                                        hidden_results[idx]) +
-                                              self.bias[idx + 1]))
+                hidden_results.append(act_function(np.matmul(self.weights[idx + 1],
+                                                             hidden_results[idx]) +
+                                                   self.bias[idx + 1], self.activation[idx+1]))
 
         # calculate final result and return, if explicit is set then return all the intermediate results as well
         output = []
         if 'explicit' in kwargs.keys():
             if kwargs.get('explicit') in ['yes', 'y', 1]:
                 output = hidden_results
-        output.append(sigmoid(np.matmul(self.weights[-1], hidden_results[-1]) + self.bias[-1]))
+        output.append(act_function(
+            np.matmul(self.weights[-1], hidden_results[-1])
+            + self.bias[-1], self.activation[-1]))
         return output
 
     def train(self, inputs, targets):
@@ -78,14 +95,21 @@ class NeuralNetwork:
             error.insert(0, np.matmul(self.weights[idx + 1].T, error[0]))
 
         # modify weights and biases (input -> first hidden layer)
-        self.weights[0] -= np.matmul((error[0] * d_sigmoid(results[0]) * self.learning_rate), input_values.T)
-        self.bias[0] -= (error[0] * d_sigmoid(results[0])) * self.learning_rate
+        self.weights[0] -= np.matmul((error[0] * d_act_function(results[0], self.activation[0])
+                                      * self.learning_rate), input_values.T)
+        self.bias[0] -= ((error[0]
+                          * d_act_function(results[0], self.activation[0]))
+                        * self.learning_rate)
 
         # modify weights and biases (all subsequent hidden layers and output)
         for idx, weight_cols in enumerate(self.weights[1:]):
-            weight_cols -= np.matmul((error[idx + 1] * d_sigmoid(results[idx + 1]) * self.learning_rate),
+            weight_cols -= np.matmul((error[idx + 1]
+                                      * d_act_function(results[idx + 1], self.activation[idx + 1])
+                                      * self.learning_rate),
                                      results[idx].T)
-            self.bias[idx + 1] -= (error[idx + 1] * d_sigmoid(results[idx + 1])) * self.learning_rate
+            self.bias[idx + 1] -= ((error[idx + 1]
+                                   * d_act_function(results[idx + 1], self.activation[idx + 1]))
+                                  * self.learning_rate)
 
     def save_to_file(self, file_name='NeuralNet.json'):
         json_file = {
