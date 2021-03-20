@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e84fd60a-8431-4cad-88b2-d03a47d507cd" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SET_USER_NAME_GLOBALLY" value="false" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1oGWdCgytdXP4Tl70cyXp7ucL3n" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../pythonProject/venv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e84fd60a-8431-4cad-88b2-d03a47d507cd" name="Default Changelist" comment="" />
+      <created>1612913493307</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1612913493307</updated>
+    </task>
+    <task id="LOCAL-00001" summary="First working prototype">
+      <created>1612931526445</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1612931526445</updated>
+    </task>
+    <task id="LOCAL-00002" summary="First working prototype">
+      <created>1612932187538</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1612932187538</updated>
+    </task>
+    <task id="LOCAL-00003" summary="First working prototype">
+      <created>1612933085302</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1612933085302</updated>
+    </task>
+    <task id="LOCAL-00004" summary="First working prototype">
+      <created>1612933750053</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1612933750053</updated>
+    </task>
+    <task id="LOCAL-00005" summary="First working prototype">
+      <created>1613023442663</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1613023442663</updated>
+    </task>
+    <task id="LOCAL-00006" summary="backwards propagation in progress">
+      <created>1613073453289</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1613073453290</updated>
+    </task>
+    <task id="LOCAL-00007" summary="backwards propagation completed">
+      <created>1613087526380</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1613087526380</updated>
+    </task>
+    <task id="LOCAL-00008" summary="XOR implemented">
+      <created>1613091155558</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1613091155558</updated>
+    </task>
+    <task id="LOCAL-00009" summary="XOR implemented">
+      <created>1613091969490</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1613091969490</updated>
+    </task>
+    <task id="LOCAL-00010" summary="XOR implemented">
+      <created>1613106406553</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1613106406553</updated>
+    </task>
+    <task id="LOCAL-00011" summary="XOR implemented">
+      <created>1613107807557</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1613107807557</updated>
+    </task>
+    <task id="LOCAL-00012" summary="XOR implemented">
+      <created>1613111905614</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1613111905614</updated>
+    </task>
+    <task id="LOCAL-00013" summary="XOR implemented">
+      <created>1613112409595</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1613112409595</updated>
+    </task>
+    <task id="LOCAL-00014" summary="XOR implemented">
+      <created>1613113515292</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1613113515292</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Changed the XOR example to learn based on random points (instead of the four 0,0 0,1 1,0 1,1.">
+      <created>1613212161904</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1613212161904</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Changed the XOR example to learn based on random points (instead of the four 0,0 0,1 1,0 1,1.">
+      <created>1613272366362</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1613272366362</updated>
+    </task>
+    <task id="LOCAL-00017" summary="New branch first commit">
+      <created>1614625666191</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1614625666191</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Implemented Save and Load models, and changed the code to save the animation as a gif and as HTML5 video.">
+      <created>1616195066453</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1616195066453</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Implemented the multiple activation functions and the ability to select a different activation function each layer.">
+      <created>1616202965864</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1616202965864</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Fixed an image in the readme file.">
+      <created>1616203044537</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1616203044537</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Implemented batch, epochs and optimizers">
+      <created>1616208424436</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1616208424436</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="ReFactor_BackPropagation" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="First working prototype" />
+    <MESSAGE value="backwards propagation in progress" />
+    <MESSAGE value="backwards propagation completed" />
+    <MESSAGE value="XOR implemented" />
+    <MESSAGE value="Changed the XOR example to learn based on random points (instead of the four 0,0 0,1 1,0 1,1." />
+    <MESSAGE value="New branch first commit" />
+    <MESSAGE value="Implemented Save and Load models, and changed the code to save the animation as a gif and as HTML5 video." />
+    <MESSAGE value="Implemented the multiple activation functions and the ability to select a different activation function each layer." />
+    <MESSAGE value="Fixed an image in the readme file." />
+    <MESSAGE value="Implemented batch, epochs and optimizers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented batch, epochs and optimizers" />
+  </component>
+</project>
