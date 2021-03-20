@@ -27,7 +27,7 @@ learning_pool_size = 100000
 batch_size = 1024
 num_surface_points = 32  # for plotting
 
-NN = nn.NeuralNetwork(inputs, hidden_layers, outputs, activation, learning_rate)
+NN = nn.NeuralNetwork(inputs, hidden_layers, outputs, activation)
 
 training_data = []
 for n in range(learning_pool_size):
@@ -62,7 +62,7 @@ def animate(t):
     batch_data = rnd.sample(training_data, batch_size)
     NN.learning_rate = NN.learning_rate - (0.001 / (t+1)) / (round(t/100, 0) + 1)
     for data in batch_data:
-        NN.train(data[:3], data[3:])
+        NN.train_once(data[:3], data[3:])
 
     fig.suptitle('Epoch: ' + str(t) +
                  ' ; learning iterations: ' +
