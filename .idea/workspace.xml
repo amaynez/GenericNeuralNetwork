@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e84fd60a-8431-4cad-88b2-d03a47d507cd" name="Default Changelist" comment="" />
+    <list default="true" id="e84fd60a-8431-4cad-88b2-d03a47d507cd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Neural_Network.py" beforeDir="false" afterPath="$PROJECT_DIR$/Neural_Network.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,12 +49,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
@@ -270,5 +275,25 @@
     <MESSAGE value="Fixed an image in the readme file." />
     <MESSAGE value="Implemented batch, epochs and optimizers" />
     <option name="LAST_COMMIT_MESSAGE" value="Implemented batch, epochs and optimizers" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Neural_Network.py</url>
+          <line>328</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="weight_col - (eta * (np.array(self.gradients[i])/ (np.sqrt(self.s[&quot;dW&quot; + str(i)] + self.epsilon))))" language="Python" />
+        <watch expression="self.s[&quot;db&quot; + str(i)] - (eta * (np.array(self.gradients[i])/ (np.sqrt(self.s[&quot;dW&quot; + str(i)] + self.epsilon))))" language="Python" />
+        <watch expression="weight_col" language="Python" />
+        <watch expression="self.gradients[i]" language="Python" />
+        <watch expression="np.sqrt(self.s[&quot;dW&quot; + str(i)] + self.epsilon)" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

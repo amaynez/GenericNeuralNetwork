@@ -72,19 +72,19 @@ class NeuralNetwork:
         self.bias_gradients.append(np.zeros((self.outputs, 1), np.float128))
 
         # Create the dictionary variables for the optimization methods
+        self.m = {}
         self.v = {}
-        self.s = {}
         for i in range(self.hidden.size + 1):
+            self.m["dW" + str(i)] = 0
+            self.m["db" + str(i)] = 0
             self.v["dW" + str(i)] = 0
             self.v["db" + str(i)] = 0
-            self.s["dW" + str(i)] = 0
-            self.s["db" + str(i)] = 0
 
     def set_optimizer(self, optimizer='vanilla', **kwargs):
-        '''
+        """
         :param optimizer: 'vanilla', 'SGD_momentum', 'NAG', 'RMSProp', 'ADAM'
         :param kwargs: beta1, beta2, epsilon, nag_coefficient, ADAM_bias_correction
-        '''
+        """
         self.optimizer = optimizer
         if 'beta1' in kwargs.keys():
             self.beta1 = float(kwargs.get('beta1'))
@@ -98,10 +98,10 @@ class NeuralNetwork:
             self.ADAM_bias_correction = bool(kwargs.get('ADAM_bias_correction'))
 
     def set_learning_rate(self, learning_rate=0.01, **kwargs):
-        '''
+        """
         :param learning_rate: float
         :param kwargs: cycling, max_lr, cycle, decay_rate
-        '''
+        """
         self.learning_rate = learning_rate
         if 'cycling' in kwargs.keys():
             self.cycling = bool(kwargs.get('cycling'))
@@ -226,7 +226,7 @@ class NeuralNetwork:
         x = np.abs((epoch / self.cycle) - (2 * cycle) + 1)
         return learning_rate + (self.max_lr - learning_rate) * np.maximum(0, (1 - x))
 
-    def apply_gradients(self, iteration, batch_size):
+    def apply_gradients(self, iteration):
         eta = self.learning_rate * (1 / (1 + self.decay_rate * iteration))
 
         if self.cycling:
@@ -235,8 +235,8 @@ class NeuralNetwork:
         for i, weight_col in enumerate(self.weights):
 
             if self.optimizer == 'vanilla':
-                weight_col -= eta * np.array(self.gradients[i]) / batch_size
-                self.bias[i] -= eta * np.array(self.bias_gradients[i]) / batch_size
+                weight_col -= eta * np.array(self.gradients[i])
+                self.bias[i] -= eta * np.array(self.bias_gradients[i])
 
             elif self.optimizer == 'SGD_momentum':
                 self.v["dW" + str(i)] = ((self.beta1 * self.v["dW" + str(i)])
@@ -244,8 +244,8 @@ class NeuralNetwork:
                 self.v["db" + str(i)] = ((self.beta1 * self.v["db" + str(i)])
                                          + (eta * np.array(self.bias_gradients[i])))
 
-                weight_col -= self.v["dW" + str(i)] / batch_size
-                self.bias[i] -= self.v["db" + str(i)] / batch_size
+                weight_col -= self.v["dW" + str(i)]
+                self.bias[i] -= self.v["db" + str(i)]
 
             elif self.optimizer == 'NAG':
                 v_prev = {"dW" + str(i): self.v["dW" + str(i)], "db" + str(i): self.v["db" + str(i)]}
@@ -256,52 +256,51 @@ class NeuralNetwork:
                                          - eta * np.array(self.bias_gradients[i]))
 
                 weight_col += -1 * ((self.beta1 * v_prev["dW" + str(i)])
-                                    + (1 + self.beta1) * self.v["dW" + str(i)]) / batch_size
+                                    + (1 + self.beta1) * self.v["dW" + str(i)])
                 self.bias[i] += ((-1 * self.beta1 * v_prev["db" + str(i)])
-                                 + (1 + self.beta1) * self.v["db" + str(i)]) / batch_size
+                                 + (1 + self.beta1) * self.v["db" + str(i)])
 
             elif self.optimizer == 'RMSProp':
-                self.s["dW" + str(i)] = ((self.beta1 * self.s["dW" + str(i)])
+                self.v["dW" + str(i)] = ((self.beta1 * self.v["dW" + str(i)])
                                          + ((1 - self.beta1) * (np.square(np.array(self.gradients[i])))))
-                self.s["db" + str(i)] = ((self.beta1 * self.s["db" + str(i)])
+                self.v["db" + str(i)] = ((self.beta1 * self.v["db" + str(i)])
                                          + ((1 - self.beta1) * (np.square(np.array(self.bias_gradients[i])))))
 
-                weight_col -= (eta * (np.array(self.gradients[i])
-                                      / (np.sqrt(self.s["dW" + str(i)] + self.epsilon)))) / batch_size
+                weight_col -= (eta * (self.gradients[i]
+                                      / (np.sqrt(self.v["dW" + str(i)] + self.epsilon))))
                 self.bias[i] -= (eta * (np.array(self.bias_gradients[i])
-                                        / (np.sqrt(self.s["db" + str(i)] + self.epsilon)))) / batch_size
+                                        / (np.sqrt(self.v["db" + str(i)] + self.epsilon))))
 
             if self.optimizer == "ADAM":
                 # decaying averages of past gradients
-                self.v["dW" + str(i)] = ((self.beta1 * self.v["dW" + str(i)])
+                self.m["dW" + str(i)] = ((self.beta1 * self.m["dW" + str(i)])
                                          + ((1 - self.beta1) * np.array(self.gradients[i])))
-                self.v["db" + str(i)] = ((self.beta1 * self.v["db" + str(i)])
+                self.m["db" + str(i)] = ((self.beta1 * self.m["db" + str(i)])
                                          + ((1 - self.beta1) * np.array(self.bias_gradients[i])))
 
                 # decaying averages of past squared gradients
-                self.s["dW" + str(i)] = ((self.beta2 * self.s["dW" + str(i)])
+                self.v["dW" + str(i)] = ((self.beta2 * self.v["dW" + str(i)])
                                          + ((1 - self.beta2) * (np.square(np.array(self.gradients[i])))))
-                self.s["db" + str(i)] = ((self.beta2 * self.s["db" + str(i)])
+                self.v["db" + str(i)] = ((self.beta2 * self.v["db" + str(i)])
                                          + ((1 - self.beta2) * (np.square(np.array(self.bias_gradients[i])))))
 
                 if self.ADAM_bias_correction:
                     # bias-corrected first and second moment estimates
-                    self.v["dW" + str(i)] = self.v["dW" + str(i)] / (1 - (self.beta1 ** true_epoch))
-                    self.v["db" + str(i)] = self.v["db" + str(i)] / (1 - (self.beta1 ** true_epoch))
-                    self.s["dW" + str(i)] = self.s["dW" + str(i)] / (1 - (self.beta2 ** true_epoch))
-                    self.s["db" + str(i)] = self.s["db" + str(i)] / (1 - (self.beta2 ** true_epoch))
+                    self.m["dW" + str(i)] = self.m["dW" + str(i)] / (1 - math.pow(self.beta1, iteration))
+                    self.m["db" + str(i)] = self.m["db" + str(i)] / (1 - math.pow(self.beta1, iteration))
+                    self.v["dW" + str(i)] = self.v["dW" + str(i)] / (1 - math.pow(self.beta2, iteration))
+                    self.v["db" + str(i)] = self.v["db" + str(i)] / (1 - math.pow(self.beta2, iteration))
 
                 # apply to weights and biases
-                weight_col -= ((eta * (self.v["dW" + str(i)]
-                                       / (np.sqrt(self.s["dW" + str(i)]) + self.epsilon)))) / batch_size
-                self.bias[i] -= ((eta * (self.v["db" + str(i)]
-                                         / (np.sqrt(self.s["db" + str(i)]) + self.epsilon)))) / batch_size
+                weight_col -= (eta * self.m["dW" + str(i)]
+                               / (np.sqrt(self.v["dW" + str(i)]) + self.epsilon))
+                self.bias[i] -= (eta * self.m["db" + str(i)]
+                                 / (np.sqrt(self.v["db" + str(i)]) + self.epsilon))
 
         self.gradient_zeros()
 
-    def fit(self, inputs, labels, **kwargs):
+    def fit(self, t, inputs, labels, **kwargs):
         """
-
         :param inputs: a list of inputs
         :param labels: a list of corresponding labels (same size as inputs)
         :param kwargs: epochs = 1, batch_size = 8, shuffle = True
@@ -319,30 +318,48 @@ class NeuralNetwork:
         if 'shuffle' in kwargs.keys():
             shuffle = bool(kwargs.get('shuffle'))
 
+        verbose = True
+        if 'verbose' in kwargs.keys():
+            verbose = bool(kwargs.get('verbose'))
+
         loss = 0
         iteration = 1
 
+        if t > 6:
+            print(t)
+
+        if verbose:
+            print('learning ', len(inputs), 'samples')
+
         for i in range(math.ceil(len(inputs)/batch_size)):
-            if batch_size*(i+1) > len(inputs):
+            if verbose:
+                print('batch', i + 1, 'of', math.ceil(len(inputs) / batch_size))
+
+            if (batch_size*(i+1)) > len(inputs):
                 training_data = inputs[(batch_size * i):-1]
                 training_targets = labels[(batch_size * i):-1]
             else:
-                training_data = inputs[(batch_size*i):(batch_size*(i+1))]
-                training_targets = labels[(batch_size*i):(batch_size*(i+1))]
+                training_data = inputs[(batch_size*i):(batch_size*(i+1)), 0:4]
+                training_targets = labels[(batch_size*i):(batch_size*(i+1)), 0:4]
+
             for j in range(epochs):
-                print('Epoch ', j, '/', epochs, ' [', end='')
+                if verbose:
+                    print('Epoch ', j + 1, '/', epochs, ' [', end='')
                 if shuffle:
                     random.shuffle(training_data)
                     random.shuffle(training_targets)
                 ti = time.perf_counter()
                 for k in range(len(training_data)):
                     loss = self.calculate_gradient(training_data[k], training_targets[k], batch_size)
-                    if k % (math.floor(batch_size/16)):
-                        print('-', end='')
-                self.apply_gradients(iteration, batch_size)
+                    if k % (batch_size/16) == 0:
+                        if verbose:
+                            print('-', end='')
+                self.apply_gradients(iteration)
                 tf = time.perf_counter()
-                print(f"] {tf - ti:0.4f}s", ' | loss: ', loss)
+                if verbose:
+                    print(f"] {tf - ti:0.4f}s", '| loss:', loss)
                 iteration += 1
+                # print(iteration)
 
     def save_to_file(self, file_name='NeuralNet.json'):
         json_file = {
